@@ -11,6 +11,6 @@ namespace RepositoryLayer.PatientRepository
     {
         IEnumerable<DoctorDto> GetDoctors(int page, int pageSize, string search);
         bool BookAppointment(string patientId, string timeId);
-        IEnumerable<BookingDetailsDto> GetPatientBookings(string patientId);
+        Task<List<BookingDetailsDto>> GetPatientBookingsAsync(string patientId);
     }
 }

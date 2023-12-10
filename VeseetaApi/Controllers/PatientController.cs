@@ -98,7 +98,7 @@ namespace VeseetaApi.Controllers
         [HttpGet("GetPatientBookings/{patientId}")]
         public  IActionResult GetPatientBookings(string patientId)
         {
-            var patientBookings =  _patientService.GetPatientBookings(patientId);
+            var patientBookings =  _patientService.GetPatientBookingsAsync(patientId);
 
 
             return Ok(patientBookings);

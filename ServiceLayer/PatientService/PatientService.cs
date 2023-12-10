@@ -25,9 +25,10 @@ namespace ServiceLayer.PatientService
         {
             return _patientRepository.BookAppointment(patientId, timeId);
         }
-        public IEnumerable<BookingDetailsDto> GetPatientBookings(string patientId)
+        public async Task<List<BookingDetailsDto>> GetPatientBookingsAsync(string patientId)
+
         {
-            return _patientRepository.GetPatientBookings(patientId);
+            return await _patientRepository.GetPatientBookingsAsync(patientId);
         }
     }
 }
