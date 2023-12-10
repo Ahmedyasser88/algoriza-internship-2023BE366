@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer.Context;
 
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209215352_ICreation2")]
+    partial class ICreation2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,8 +116,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime>("AppointmentDay")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AppointmentStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("AppointmentStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DiscountId")
                         .HasColumnType("nvarchar(450)");
@@ -147,9 +149,6 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("Appointment_Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Booking_Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Dcotor_Id")
                         .HasColumnType("nvarchar(450)");
@@ -211,31 +210,7 @@ namespace RepositoryLayer.Migrations
                         .IsUnique()
                         .HasFilter("[User_Id] IS NOT NULL");
 
-                    b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("DomainLayer.Models.DoctorAvailability", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("DoctorAvailability");
+                    b.ToTable("Doctor");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Patient", b =>
@@ -430,8 +405,7 @@ namespace RepositoryLayer.Migrations
 
                     b.HasOne("DomainLayer.Models.Doctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("DomainLayer.Models.Patient", null)
                         .WithMany("Appointments")
@@ -478,26 +452,16 @@ namespace RepositoryLayer.Migrations
                     b.HasOne("DomainLayer.Models.Specialization", "Specialization")
                         .WithMany("Doctors")
                         .HasForeignKey("Specialize_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("DomainLayer.Models.ApplicationUser", "User")
                         .WithOne("Doctor")
                         .HasForeignKey("DomainLayer.Models.Doctor", "User_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Specialization");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DomainLayer.Models.DoctorAvailability", b =>
-                {
-                    b.HasOne("DomainLayer.Models.Doctor", "Doctor")
-                        .WithMany("Availabilities")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Patient", b =>
@@ -505,12 +469,12 @@ namespace RepositoryLayer.Migrations
                     b.HasOne("DomainLayer.Models.Discount", "Discount")
                         .WithMany("Patients")
                         .HasForeignKey("Discount_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("DomainLayer.Models.ApplicationUser", "User")
                         .WithOne("Patient")
                         .HasForeignKey("DomainLayer.Models.Patient", "User_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Discount");
 
@@ -522,7 +486,7 @@ namespace RepositoryLayer.Migrations
                     b.HasOne("DomainLayer.Models.Appointment", "Appointment")
                         .WithMany("Times")
                         .HasForeignKey("Appointment_Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Appointment");
                 });
@@ -604,8 +568,6 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("DomainLayer.Models.Doctor", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("Availabilities");
 
                     b.Navigation("Bookings");
                 });

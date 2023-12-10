@@ -12,5 +12,7 @@ namespace VeseetaApi.Services
         Task<AuthModel> RegisterAsync(RegisterDTO model);
         Task<AuthModel> GetTokenAsync(TokenRequestModel model);
         Task<string> AddRoleAsync(AddRoleModel model);
+
+        Task<AuthModel> RegisterPatientAsync(RegisterDTO model);
     }
 }

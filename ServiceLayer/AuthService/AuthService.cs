@@ -67,8 +67,7 @@ namespace VeseetaApi.Services
                 User_Id = user.Id,
                 Price = 0,
                 Specialize_Id = "1"
-                // Set other properties of the Doctor entity as needed
-                // For example, set Price, Specialize_Id, etc.
+                
             };
 
             _dbContext.Set<Doctor>().Add(doctor);
@@ -88,7 +87,7 @@ namespace VeseetaApi.Services
 
         }
 
-        //GET TOKEN
+        //GET TOKEN (Log in)
         public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
         {
             var authModel = new AuthModel();
@@ -104,13 +103,14 @@ namespace VeseetaApi.Services
             var jwtSecurityToken = await CreateJwtToken(user);
             var rolesList = await _userManager.GetRolesAsync(user);
 
-            authModel.IsAuthenticated = true;
-            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            
+            authModel.LoggedIn = true;
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
-            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = rolesList.ToList();
-
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authModel.IsAuthenticated = true;
+            
             return authModel;
         }
 
@@ -163,5 +163,64 @@ namespace VeseetaApi.Services
 
             return jwtSecurityToken;
         }
+
+        // Add Patient
+
+        public async Task<AuthModel> RegisterPatientAsync(RegisterDTO model)
+        {
+            if (await _userManager.FindByEmailAsync(model.Email) is not null)
+                return new AuthModel { Message = "Email is already exists!" };
+
+            if (await _userManager.FindByNameAsync(model.Username) is not null)
+                return new AuthModel { Message = "UserName is already exists!" };
+            var user = new ApplicationUser
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                User_FullName = model.FirstName + model.LastName,
+                DOB = model.DOB,
+                Phone = model.Phone,
+                Gender = model.gender,
+                AccountType = model.AccountType,
+                //Password = model.Password
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+                foreach (var error in result.Errors)
+                {
+                    errors += $"{error.Description}, ";
+                }
+                return new AuthModel { Message = errors };
+            }
+            await _userManager.AddToRoleAsync(user, "Patient");
+
+            // Create a Doctor entity and add it to the Doctor table
+            var patient = new Patient
+            {
+                Id = user.Id,
+                User_Id = user.Id,
+                
+            };
+
+            _dbContext.Set<Patient>().Add(patient);
+            await _dbContext.SaveChangesAsync();
+
+            var jwtSecurityToken = await CreateJwtToken(user);
+
+            return new AuthModel
+            {
+                Email = user.Email,
+                ExpiresOn = jwtSecurityToken.ValidTo,
+                IsAuthenticated = true,
+                Roles = new List<string> { "Patient" },
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Username = user.UserName
+            };
+
+        }
+
     }
 }

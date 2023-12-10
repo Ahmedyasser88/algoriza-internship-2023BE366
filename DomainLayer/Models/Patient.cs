@@ -23,6 +23,7 @@ namespace DomainLayer.Models
         public ApplicationUser User { get; set; }
         public Discount Discount { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
     }
 }

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.33130.400
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeseetaApi", "VeseetaApi\VeseetaApi.csproj", "{B582D278-E44D-44EE-80D4-D79CBCA77560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VeseetaApi", "VeseetaApi\VeseetaApi.csproj", "{B582D278-E44D-44EE-80D4-D79CBCA77560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{AA49C6C0-FD75-463D-A9D0-27D3AAD7F07E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{AA49C6C0-FD75-463D-A9D0-27D3AAD7F07E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{19BBCCDC-42B9-48C6-84A4-C7E342078F66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{19BBCCDC-42B9-48C6-84A4-C7E342078F66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{F0745EA7-AB66-4C12-9B6F-BC7BF5C55C55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{F0745EA7-AB66-4C12-9B6F-BC7BF5C55C55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

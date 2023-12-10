@@ -17,5 +17,6 @@ namespace DomainLayer.Models
 
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Patient> Patients { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
     }
 }

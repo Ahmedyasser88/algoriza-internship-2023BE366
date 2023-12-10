@@ -12,6 +12,7 @@ namespace DomainLayer.Models
     {
         [Key]
         public string Id { get; set; }
+        
         public DateTime _Time { get; set; }
         //Foreign Keys
         [ForeignKey("Appointment")]

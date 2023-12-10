@@ -15,8 +15,12 @@ using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RepositoryLayer.Context;
+using RepositoryLayer.DoctorRepository;
+using RepositoryLayer.PatientRepository;
 using RepositoryLayer.Repository;
 using ServiceLayer.AdminServices;
+using ServiceLayer.DoctorService;
+using ServiceLayer.PatientService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,10 +48,16 @@ namespace VeseetaApi
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("MyConnection"))
             );
+            
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped(typeof(IAdminRepository<>), typeof(AdminRepository<>));
             services.AddTransient<IAdminService, AdminService>();
+            services.AddScoped(typeof(IDoctorRepository), typeof(DoctorRepository));
+            services.AddTransient<IDoctorService, DoctorService>();
+            services.AddScoped(typeof(IPatientRepository), typeof(PatientRepository));
+            services.AddTransient<IPatientService, PatientService>();
+
 
             services.AddAuthentication(options =>
             {

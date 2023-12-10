@@ -16,9 +16,9 @@ namespace DomainLayer.Models
         // Navigation properties
         public ICollection<Doctor> Doctors { get; set; }
 
-        public static implicit operator Specialization(ApplicationUser v)
-        {
-            throw new NotImplementedException();
-        }
+        //public static implicit operator Specialization(ApplicationUser v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -21,5 +21,8 @@ namespace DomainLayer.Models
     public ApplicationUser User { get; set; }
     public Specialization Specialization { get; set; }
     public ICollection<Appointment> Appointments { get; set; }
-    }   
+    public ICollection<Booking> Bookings { get; set; }
+    public ICollection<DoctorAvailability> Availabilities { get; set; }
+
+    }
 }

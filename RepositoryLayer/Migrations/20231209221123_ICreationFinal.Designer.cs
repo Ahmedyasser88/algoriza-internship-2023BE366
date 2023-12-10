@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer.Context;
 
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209221123_ICreationFinal")]
+    partial class ICreationFinal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,31 +213,7 @@ namespace RepositoryLayer.Migrations
                         .IsUnique()
                         .HasFilter("[User_Id] IS NOT NULL");
 
-                    b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("DomainLayer.Models.DoctorAvailability", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Day")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("DoctorAvailability");
+                    b.ToTable("Doctor");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Patient", b =>
@@ -490,16 +468,6 @@ namespace RepositoryLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DomainLayer.Models.DoctorAvailability", b =>
-                {
-                    b.HasOne("DomainLayer.Models.Doctor", "Doctor")
-                        .WithMany("Availabilities")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Doctor");
-                });
-
             modelBuilder.Entity("DomainLayer.Models.Patient", b =>
                 {
                     b.HasOne("DomainLayer.Models.Discount", "Discount")
@@ -604,8 +572,6 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("DomainLayer.Models.Doctor", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("Availabilities");
 
                     b.Navigation("Bookings");
                 });

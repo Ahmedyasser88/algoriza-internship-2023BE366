@@ -24,60 +24,89 @@ namespace RepositoryLayer.Context
                 .HasOne(a => a.Doctor)
                 .WithOne(d => d.User)
                 .HasForeignKey<Doctor>(d => d.User_Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // One-to-One relationship between ApplicationUser and Patient
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(a => a.Patient)
                 .WithOne(p => p.User)
                 .HasForeignKey<Patient>(p => p.User_Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Many-to-One relationship between Doctor and Specialization
             modelBuilder.Entity<Doctor>()
                 .HasOne(d => d.Specialization)
                 .WithMany(s => s.Doctors)
                 .HasForeignKey(d => d.Specialize_Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Many-to-One relationship between Patient and Discount
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.Discount)
                 .WithMany(d => d.Patients)
                 .HasForeignKey(p => p.Discount_Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Many-to-One relationship between Appointment and Doctor
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Doctor)
-                .WithMany(d => d.Appointments)
-                .HasForeignKey(a => a.DoctorId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //Booking Table 
 
-            // Many-to-One relationship between Appointment and Patient
-            modelBuilder.Entity<Appointment>()
+            // Many-to-One relationship between Booking and Appointment
+            modelBuilder.Entity<Booking>()
+                .HasOne(a => a.Appointment)
+                .WithMany(d => d.Bookings)
+                .HasForeignKey(a => a.Appointment_Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Many-to-One relationship between Booking and Doctor
+            modelBuilder.Entity<Booking>()
+                .HasOne(a => a.Doctors)
+                .WithMany(d => d.Bookings)
+                .HasForeignKey(a => a.Dcotor_Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Many - to - One relationship between Booking and Patient
+            modelBuilder.Entity<Booking>()
                 .HasOne(a => a.Patient)
-                .WithMany(p => p.Appointments)
-                .HasForeignKey(a => a.PatientId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .WithMany(b => b.Bookings)
+                .HasForeignKey(a => a.Patient_Id)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Many-to-One relationship between Appointment and Discount
-            modelBuilder.Entity<Appointment>()
+            // Many-to-One relationship between Booking and Discount
+            modelBuilder.Entity<Booking>()
                 .HasOne(a => a.Discount)
-                .WithMany(d => d.Appointments)
-                .HasForeignKey(a => a.DiscountId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .WithMany(d => d.Bookings)
+                .HasForeignKey(a => a.Discount_Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
 
             // Many-to-One relationship between Time and Appointment
             modelBuilder.Entity<Time>()
                 .HasOne(t => t.Appointment)
                 .WithMany(a => a.Times)
                 .HasForeignKey(t => t.Appointment_Id)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Many-to-One relationship between Doctor and Appointment
+            modelBuilder.Entity<Appointment>()
+                .HasOne(t => t.Doctor)
+                .WithMany(a => a.Appointments)
+                .HasForeignKey(t => t.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // One-to-Many relationship between Doctor and DoctorAvailability
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.Availabilities)
+                .WithOne(da => da.Doctor)
+                .HasForeignKey(da => da.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             base.OnModelCreating(modelBuilder);
 
         }
 
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
     }
 }
